@@ -1,10 +1,13 @@
 package routes
 
 import (
+	"fmt"
+
 	"github.com/gofiber/fiber/v2"
 )
 
 func Setup(app *fiber.App) {
+	fmt.Println("Setup routes")
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusOK).JSON(fiber.Map{
 			"success": true,

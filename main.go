@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -12,6 +13,7 @@ import (
 )
 
 func main() {
+	fmt.Println("Starting GoGoS Recipes Backend")
 
 	app := fiber.New()
 
@@ -23,11 +25,13 @@ func main() {
 	database.Connect()
 
 	routes.Setup(app)
-	var port string
 
-	if os.Getenv("APP_ENV") == "development" {
-		port = os.Getenv("PORT")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "5000"
 	}
+
+	fmt.Println("Listening on port " + port)
 
 	err := app.Listen(":" + port)
 	if err != nil {
