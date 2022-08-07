@@ -1,1 +1,1 @@
-web: bin/gogos-recipes-backend
+web: app/bin/gogos-recipes-backend
