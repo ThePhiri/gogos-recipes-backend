@@ -26,6 +26,8 @@ func main() {
 
 	routes.Setup(app)
 
+	fmt.Println("Starting server on port 5000")
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "5000"
