@@ -1,1 +1,1 @@
-web: gogos-recipes-backend/main.go
+web: gogos-recipes-backend
