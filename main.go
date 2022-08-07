@@ -26,6 +26,10 @@ func main() {
 	routes.Setup(app)
 
 	port := os.Getenv("PORT")
+	if port == "" {
+		port = "9000"
+	}
+
 	err := app.Listen(":" + port)
 	if err != nil {
 		log.Fatal("Error app failed to start")
