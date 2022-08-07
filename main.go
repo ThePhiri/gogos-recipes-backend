@@ -23,10 +23,10 @@ func main() {
 	database.Connect()
 
 	routes.Setup(app)
+	var port string
 
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "5000"
+	if os.Getenv("APP_ENV") == "development" {
+		port = os.Getenv("PORT")
 	}
 
 	err := app.Listen(":" + port)
