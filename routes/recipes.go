@@ -8,4 +8,5 @@ import (
 func RecipesRoutes(route fiber.Router) {
 	route.Post("/", controllers.CreateRecipe)
 	route.Get("/", controllers.GetAllRecipes)
+	route.Get("/:id", controllers.GetRecipeById)
 }

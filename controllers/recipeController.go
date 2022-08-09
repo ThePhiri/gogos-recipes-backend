@@ -100,3 +100,28 @@ func GetAllRecipes(c *fiber.Ctx) error {
 	)
 
 }
+
+func GetRecipeById(c *fiber.Ctx) error {
+	recipeCollection := "recipes"
+
+	recipe, err := database.GetById(recipeCollection, c.Params("id"))
+	if err != nil {
+		log.Printf("Error finding recipe: %v", err)
+		return c.Status(500).JSON(
+			fiber.Map{
+				"message": "Error finding recipe",
+				"success": false,
+				"error":   err,
+			},
+		)
+	}
+
+	return c.Status(fiber.StatusOK).JSON(
+		fiber.Map{
+			"message": "Recipe found",
+			"success": true,
+			"data":    recipe,
+		},
+	)
+
+}

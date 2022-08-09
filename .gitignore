@@ -15,3 +15,5 @@
 # vendor/
 
 .env
+
+gogos-recipes-backend
