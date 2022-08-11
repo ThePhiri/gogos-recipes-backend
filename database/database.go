@@ -85,19 +85,19 @@ func GetById(collection string, id string) (interface{}, error) {
 	return result, nil
 }
 
-//getbyfilter from mongo
+//getbyfilter from mongodb
 func GetByFilter(collection string, filter bson.M) ([]interface{}, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	c := MI.DB.Collection(collection)
+	log.Printf("Getting %s with filter %s", collection, filter)
+	var results []interface{}
+	//find one from object id mongo
 	cur, err := c.Find(ctx, filter)
 	if err != nil {
 		return nil, err
 	}
-	defer cur.Close(ctx)
-
-	var results []interface{}
 	for cur.Next(ctx) {
 		var result bson.M
 		err := cur.Decode(&result)
@@ -106,10 +106,5 @@ func GetByFilter(collection string, filter bson.M) ([]interface{}, error) {
 		}
 		results = append(results, result)
 	}
-
-	if err := cur.Err(); err != nil {
-		return nil, err
-	}
-
 	return results, nil
 }

@@ -2,6 +2,8 @@ package controllers
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"log"
 	"time"
 
@@ -11,6 +13,10 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
+
+var recipeCollection = "recipes"
+
+//TODO: Sepearate out create and get all logic to database.go file
 
 func CreateRecipe(c *fiber.Ctx) error {
 	recipeCollection := database.MI.DB.Collection("recipes")
@@ -34,7 +40,7 @@ func CreateRecipe(c *fiber.Ctx) error {
 
 	result, err := recipeCollection.InsertOne(ctx, recipe)
 	if err != nil {
-		log.Printf("Error inserting recipe: %v", err)
+		fmt.Printf("Error inserting recipe: %v", err)
 		return c.Status(500).JSON(
 			fiber.Map{
 				"message": "Error inserting recipe",
@@ -64,7 +70,7 @@ func GetAllRecipes(c *fiber.Ctx) error {
 
 	cur, err := recipeCollection.Find(ctx, filter, findOptions)
 	if err != nil {
-		log.Printf("Error finding recipes: %v", err)
+		fmt.Printf("Error finding recipes: %v", err)
 		return c.Status(500).JSON(
 			fiber.Map{
 				"message": "Error finding recipes",
@@ -102,9 +108,15 @@ func GetAllRecipes(c *fiber.Ctx) error {
 }
 
 func GetRecipeById(c *fiber.Ctx) error {
-	recipeCollection := "recipes"
+	id := c.Params("id")
+	if id == "" {
+		log.Print("Error: id not found")
+		return errors.New("id not found")
+	}
 
-	recipe, err := database.GetById(recipeCollection, c.Params("id"))
+	fmt.Printf("Id: %v", id)
+
+	recipe, err := database.GetById(recipeCollection, id)
 	if err != nil {
 		log.Printf("Error finding recipe: %v", err)
 		return c.Status(500).JSON(
@@ -124,4 +136,37 @@ func GetRecipeById(c *fiber.Ctx) error {
 		},
 	)
 
+}
+
+func GetRecipeByCulture(c *fiber.Ctx) error {
+	fmt.Printf("Culture: %v", c.Params("culture"))
+
+	culture := c.Params("culture")
+	fmt.Printf("Culture: %v", culture)
+	if culture == "" {
+		log.Print("Error: culture not found")
+		return errors.New("culture not found")
+	}
+
+	cultureFilter := bson.M{"culture": culture}
+
+	recipes, err := database.GetByFilter(recipeCollection, cultureFilter)
+	if err != nil {
+		log.Printf("Error finding recipes: %v", err)
+		return c.Status(500).JSON(
+			fiber.Map{
+				"message": "Error finding recipe",
+				"success": false,
+				"error":   err,
+			},
+		)
+	}
+
+	return c.Status(fiber.StatusOK).JSON(
+		fiber.Map{
+			"message": "Recipe found",
+			"success": true,
+			"data":    recipes,
+		},
+	)
 }
