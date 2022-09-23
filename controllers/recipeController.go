@@ -29,7 +29,7 @@ func CreateRecipe(c *fiber.Ctx) error {
 		return c.Status(500).JSON(
 			fiber.Map{
 				"message": "Error parsing body",
-				"success": false,
+				"status":  "error",
 				"error":   err,
 			},
 		)
@@ -44,7 +44,7 @@ func CreateRecipe(c *fiber.Ctx) error {
 		return c.Status(500).JSON(
 			fiber.Map{
 				"message": "Error inserting recipe",
-				"success": false,
+				"status":  "error",
 				"error":   err,
 			},
 		)
@@ -53,7 +53,7 @@ func CreateRecipe(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusCreated).JSON(
 		fiber.Map{
 			"message": "Recipe created",
-			"success": true,
+			"status":  "success",
 			"data":    result,
 		},
 	)
@@ -74,7 +74,7 @@ func GetAllRecipes(c *fiber.Ctx) error {
 		return c.Status(500).JSON(
 			fiber.Map{
 				"message": "Error finding recipes",
-				"success": false,
+				"status":  "error",
 				"error":   err,
 			},
 		)
@@ -88,7 +88,7 @@ func GetAllRecipes(c *fiber.Ctx) error {
 			return c.Status(500).JSON(
 				fiber.Map{
 					"message": "Error decoding recipe",
-					"success": false,
+					"status":  "error",
 					"error":   err,
 				},
 			)
@@ -100,7 +100,7 @@ func GetAllRecipes(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(
 		fiber.Map{
 			"message": "Recipes found",
-			"success": true,
+			"status":  "error",
 			"data":    recipes,
 		},
 	)
@@ -122,7 +122,7 @@ func GetRecipeById(c *fiber.Ctx) error {
 		return c.Status(500).JSON(
 			fiber.Map{
 				"message": "Error finding recipe",
-				"success": false,
+				"status":  "error",
 				"error":   err,
 			},
 		)
@@ -131,7 +131,7 @@ func GetRecipeById(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(
 		fiber.Map{
 			"message": "Recipe found",
-			"success": true,
+			"status":  "error",
 			"data":    recipe,
 		},
 	)
@@ -156,7 +156,7 @@ func GetRecipeByCulture(c *fiber.Ctx) error {
 		return c.Status(500).JSON(
 			fiber.Map{
 				"message": "Error finding recipe",
-				"success": false,
+				"status":  "error",
 				"error":   err,
 			},
 		)
@@ -165,8 +165,12 @@ func GetRecipeByCulture(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(
 		fiber.Map{
 			"message": "Recipe found",
-			"success": true,
+			"status":  "error",
 			"data":    recipes,
 		},
 	)
 }
+
+//update recipe function
+
+//delete recipe function

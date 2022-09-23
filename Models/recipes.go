@@ -9,6 +9,7 @@ import (
 type Recipe struct {
 	ID          primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
 	Name        string             `json:"name" bson:"name,omitempty"`
+	UserId      string             `json:"userId" bson:"userId,omitempty"`
 	Description string             `json:"description" bson:"description,omitempty"`
 	Culture     string             `json:"culture" bson:"culture,omitempty"`
 	Country     string             `json:"country" bson:"country,omitempty"`

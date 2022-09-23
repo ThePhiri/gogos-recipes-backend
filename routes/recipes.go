@@ -6,8 +6,13 @@ import (
 )
 
 func RecipesRoutes(route fiber.Router) {
-	route.Post("/", controllers.CreateRecipe)
+	//unprotected routes
 	route.Get("/", controllers.GetAllRecipes)
 	route.Get("/:id", controllers.GetRecipeById)
 	route.Get("/culture/:culture", controllers.GetRecipeByCulture)
+
+	//protected routes
+	route.Post("/", controllers.CreateRecipe)
+	
+
 }

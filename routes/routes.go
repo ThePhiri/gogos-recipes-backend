@@ -10,7 +10,7 @@ func Setup(app *fiber.App) {
 	fmt.Println("Setup routes")
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusOK).JSON(fiber.Map{
-			"success": true,
+			"status":  "success",
 			"message": "You are at the root endpoint 😉",
 		})
 	})
@@ -18,4 +18,6 @@ func Setup(app *fiber.App) {
 	api := app.Group("/api")
 
 	RecipesRoutes(api.Group("/recipes"))
+	UserRoutes(api.Group("/users"))
+
 }
