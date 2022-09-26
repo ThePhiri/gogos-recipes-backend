@@ -19,6 +19,7 @@ var recipeCollection = "recipes"
 //TODO: Sepearate out create and get all logic to database.go file
 
 func CreateRecipe(c *fiber.Ctx) error {
+	//check if user is logged in
 	recipeCollection := database.MI.DB.Collection("recipes")
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
@@ -174,3 +175,5 @@ func GetRecipeByCulture(c *fiber.Ctx) error {
 //update recipe function
 
 //delete recipe function
+
+//get recipes by user id

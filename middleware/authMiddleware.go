@@ -1,17 +1,19 @@
 package middleware
 
 import (
+	"errors"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
 	helper "github.com/thephiri/gogos-recipes-backend/helpers"
 )
 
-func Authentication(c *fiber.Ctx) {
-	clientToken := c.Params("token")
+func Authentication(c *fiber.Ctx) error {
+	//maybe switch this to use cookies?
+	clientToken := c.Get("token")
 	if clientToken == "" {
 		log.Print("Error: token not found")
-		return
+		return errors.New("eish no token")
 	}
 
 	claims, err := helper.ValidateToken(clientToken)
@@ -23,7 +25,7 @@ func Authentication(c *fiber.Ctx) {
 				"error":   err,
 			},
 		)
-		return
+		return errors.New(err)
 	}
 
 	c.Set("email", claims.Email)
@@ -31,5 +33,5 @@ func Authentication(c *fiber.Ctx) {
 	c.Set("last_name", claims.Last_name)
 	c.Set("uid", claims.Uid)
 
-	c.Next()
+	return c.Next()
 }
