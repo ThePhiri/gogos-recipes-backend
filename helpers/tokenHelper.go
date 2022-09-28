@@ -82,6 +82,7 @@ func ValidateToken(signedToken string) (claims *SignedDetails, msg string) {
 }
 
 func UpdateAllTokens(signedToken string, signedRefreshToken string, userId string) {
+	log.Print("updating user token")
 	var userCollection = database.MI.DB.Collection("users")
 	var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 
@@ -99,15 +100,17 @@ func UpdateAllTokens(signedToken string, signedRefreshToken string, userId strin
 		Upsert: &upsert,
 	}
 
-	_, err := userCollection.UpdateOne(
+	updatedValue, err := userCollection.UpdateOne(
 		ctx,
 		filter,
 		bson.D{
-			{Key: "&set", Value: updateObj},
+			{Key: "$set", Value: updateObj},
 		},
 		&opt,
 	)
 	defer cancel()
+
+	log.Printf("updated object id %v", updatedValue)
 
 	if err != nil {
 		log.Printf("Update token %v", err)

@@ -198,7 +198,7 @@ func GetByUserId(c *fiber.Ctx) error {
 	}
 	return c.Status(fiber.StatusOK).JSON(
 		fiber.Map{
-			"message": "Recipe found",
+			"message": "Recipes found",
 			"status":  "error",
 			"data":    recipes,
 		},
