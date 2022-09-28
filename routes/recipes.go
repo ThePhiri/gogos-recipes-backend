@@ -15,5 +15,6 @@ func RecipesRoutes(route fiber.Router) {
 
 	route.Use(middleware.Authentication)
 	route.Post("/", controllers.CreateRecipe)
+	route.Get("/user/:userid", controllers.GetByUserId)
 
 }

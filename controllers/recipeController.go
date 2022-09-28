@@ -177,3 +177,30 @@ func GetRecipeByCulture(c *fiber.Ctx) error {
 //delete recipe function
 
 //get recipes by user id
+func GetByUserId(c *fiber.Ctx) error {
+	userId := c.Params("userId")
+
+	if userId == "" {
+		log.Print("Error: userid not found")
+		return errors.New("userid not found")
+	}
+
+	recipes, err := database.GetByFilter(recipeCollection, bson.M{"userId": userId})
+	if err != nil {
+		log.Printf("Error finding recipes: %v", err)
+		return c.Status(500).JSON(
+			fiber.Map{
+				"message": "Error finding recipes",
+				"status":  "error",
+				"error":   err,
+			},
+		)
+	}
+	return c.Status(fiber.StatusOK).JSON(
+		fiber.Map{
+			"message": "Recipe found",
+			"status":  "error",
+			"data":    recipes,
+		},
+	)
+}
