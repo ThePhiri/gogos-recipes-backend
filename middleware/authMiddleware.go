@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"errors"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
@@ -13,21 +12,27 @@ func Authentication(c *fiber.Ctx) error {
 	clientToken := c.Get("token")
 	if clientToken == "" {
 		log.Print("Error: token not found")
-		return errors.New("eish no token")
+		return c.Status(fiber.StatusInternalServerError).JSON(
+			fiber.Map{
+				"message": "Error getting token",
+				"status":  "error",
+				"error":   "eish no token",
+			},
+		)
 	}
 
 	log.Printf("client token is %v", clientToken)
 
 	claims, err := helper.ValidateToken(clientToken)
 	if err != "" {
-		c.Status(fiber.StatusInternalServerError).JSON(
+
+		return c.Status(fiber.StatusInternalServerError).JSON(
 			fiber.Map{
 				"message": "Error binding json",
 				"status":  "error",
 				"error":   err,
 			},
 		)
-		return errors.New(err)
 	}
 
 	c.Set("email", claims.Email)
