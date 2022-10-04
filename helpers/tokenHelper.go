@@ -43,6 +43,11 @@ func GenerateAllTokens(email string, firstName string, lastName string, uid stri
 	}
 
 	token, err := jwt.NewWithClaims(jwt.SigningMethodHS256, claims).SignedString([]byte(SECRET_KEY))
+	if err != nil {
+		log.Print("GEnerate tokenm error", err)
+		return
+	}
+
 	refreshToken, err := jwt.NewWithClaims(jwt.SigningMethodHS256, refreshClaims).SignedString([]byte(SECRET_KEY))
 
 	if err != nil {
@@ -53,6 +58,7 @@ func GenerateAllTokens(email string, firstName string, lastName string, uid stri
 }
 
 func ValidateToken(signedToken string) (claims *SignedDetails, msg string) {
+	log.Printf("signetoken -> %v", signedToken)
 	token, err := jwt.ParseWithClaims(
 		signedToken,
 		&SignedDetails{},

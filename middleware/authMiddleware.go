@@ -16,6 +16,8 @@ func Authentication(c *fiber.Ctx) error {
 		return errors.New("eish no token")
 	}
 
+	log.Printf("client token is %v", clientToken)
+
 	claims, err := helper.ValidateToken(clientToken)
 	if err != "" {
 		c.Status(fiber.StatusInternalServerError).JSON(
