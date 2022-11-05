@@ -8,8 +8,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
-	"github.com/thephiri/gogos-recipes-backend/database"
-	"github.com/thephiri/gogos-recipes-backend/routes"
+	"github.com/thephiri/gogos-recipes-backend/src/database"
+	"github.com/thephiri/gogos-recipes-backend/src/routes"
 )
 
 func main() {

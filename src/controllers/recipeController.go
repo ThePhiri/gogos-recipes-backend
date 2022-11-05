@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
-	models "github.com/thephiri/gogos-recipes-backend/Models"
-	"github.com/thephiri/gogos-recipes-backend/database"
+	models "github.com/thephiri/gogos-recipes-backend/src/Models"
+	"github.com/thephiri/gogos-recipes-backend/src/database"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )

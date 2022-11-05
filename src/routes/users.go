@@ -2,7 +2,7 @@ package routes
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/thephiri/gogos-recipes-backend/controllers"
+	"github.com/thephiri/gogos-recipes-backend/src/controllers"
 )
 
 func UserRoutes(route fiber.Router) {

@@ -8,9 +8,9 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
-	models "github.com/thephiri/gogos-recipes-backend/Models"
-	database "github.com/thephiri/gogos-recipes-backend/database"
-	helper "github.com/thephiri/gogos-recipes-backend/helpers"
+	models "github.com/thephiri/gogos-recipes-backend/src/Models"
+	database "github.com/thephiri/gogos-recipes-backend/src/database"
+	helper "github.com/thephiri/gogos-recipes-backend/src/helpers"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"golang.org/x/crypto/bcrypt"

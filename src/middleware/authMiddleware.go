@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"github.com/gofiber/fiber/v2"
-	helper "github.com/thephiri/gogos-recipes-backend/helpers"
+	helper "github.com/thephiri/gogos-recipes-backend/src/helpers"
 )
 
 func Authentication(c *fiber.Ctx) error {
