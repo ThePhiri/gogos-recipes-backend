@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"time"
 
@@ -21,7 +20,7 @@ var validate = validator.New()
 func HashPassword(password string) string {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
 	if err != nil {
-		log.Print("Error : %v", err)
+		log.Printf("Error : %v", err)
 		return "Error"
 	}
 
@@ -34,7 +33,8 @@ func VerifyPassword(userPassword string, providedPassword string) (bool, string)
 	msg := ""
 
 	if err != nil {
-		msg = fmt.Sprintf("login or password is incorrect")
+
+		msg = "login or password is incorrect"
 		check = false
 	}
 
@@ -134,6 +134,7 @@ func Login(c *fiber.Ctx) error {
 	var foundUser models.User
 
 	if err := c.BodyParser(&user); err != nil {
+		defer cancel()
 		return c.Status(500).JSON(
 			fiber.Map{
 				"message": "Error parsing body",
@@ -155,9 +156,9 @@ func Login(c *fiber.Ctx) error {
 		)
 	}
 
-	passwordIsValid, msg := VerifyPassword(*&user.Password, *&foundUser.Password)
-	defer cancel()
-	if passwordIsValid != true {
+	passwordIsValid, msg := VerifyPassword(user.Password, foundUser.Password)
+
+	if !passwordIsValid {
 		return c.Status(500).JSON(
 			fiber.Map{
 				"message": "Incorrect Password",

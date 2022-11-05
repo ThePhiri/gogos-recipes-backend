@@ -21,12 +21,13 @@ var recipeCollection = "recipes"
 func CreateRecipe(c *fiber.Ctx) error {
 	//check if user is logged in
 	recipeCollection := database.MI.DB.Collection("recipes")
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 
 	recipe := new(models.Recipe)
 
 	if err := c.BodyParser(recipe); err != nil {
 		log.Printf("Error parsing body: %v", err)
+		defer cancel()
 		return c.Status(500).JSON(
 			fiber.Map{
 				"message": "Error parsing body",
@@ -42,6 +43,7 @@ func CreateRecipe(c *fiber.Ctx) error {
 	result, err := recipeCollection.InsertOne(ctx, recipe)
 	if err != nil {
 		fmt.Printf("Error inserting recipe: %v", err)
+		defer cancel()
 		return c.Status(500).JSON(
 			fiber.Map{
 				"message": "Error inserting recipe",
@@ -50,6 +52,7 @@ func CreateRecipe(c *fiber.Ctx) error {
 			},
 		)
 	}
+	defer cancel()
 
 	return c.Status(fiber.StatusCreated).JSON(
 		fiber.Map{
@@ -62,7 +65,7 @@ func CreateRecipe(c *fiber.Ctx) error {
 
 func GetAllRecipes(c *fiber.Ctx) error {
 	recipeCollection := database.MI.DB.Collection("recipes")
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 
 	var recipes []models.Recipe
 
@@ -72,6 +75,7 @@ func GetAllRecipes(c *fiber.Ctx) error {
 	cur, err := recipeCollection.Find(ctx, filter, findOptions)
 	if err != nil {
 		fmt.Printf("Error finding recipes: %v", err)
+		defer cancel()
 		return c.Status(500).JSON(
 			fiber.Map{
 				"message": "Error finding recipes",
@@ -86,6 +90,7 @@ func GetAllRecipes(c *fiber.Ctx) error {
 		err := cur.Decode(&recipe)
 		if err != nil {
 			log.Printf("Error decoding recipe: %v", err)
+			defer cancel()
 			return c.Status(500).JSON(
 				fiber.Map{
 					"message": "Error decoding recipe",
@@ -97,6 +102,8 @@ func GetAllRecipes(c *fiber.Ctx) error {
 
 		recipes = append(recipes, recipe)
 	}
+
+	defer cancel()
 
 	return c.Status(fiber.StatusOK).JSON(
 		fiber.Map{
