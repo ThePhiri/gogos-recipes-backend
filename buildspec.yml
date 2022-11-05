@@ -4,11 +4,6 @@ phases:
     runtime-versions:
       golang: 1.13
 
-  pre_build: 
-    commands:
-      - golint -set_exit_status
-      - go test
-
   build:
     commands:
       - go build -o app
