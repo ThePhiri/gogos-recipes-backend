@@ -3,8 +3,6 @@ phases:
   install: 
     runtime-versions:
       golang: 1.13
-    commands:
-      - go get -u github.com/golang/lint/golint
 
   pre_build: 
     commands:
