@@ -62,6 +62,7 @@ jobs:
         environment_name: Gogosbackend-env
         version_label: Github deployment
         region: af-south-1
+        use_existing_version_if_available: true
         deployment_package: deploy.zip
 
         
