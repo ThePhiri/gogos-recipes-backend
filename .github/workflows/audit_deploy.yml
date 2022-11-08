@@ -43,6 +43,7 @@ jobs:
       run: go test -race -vet=off ./...
 
   deploy:
+    needs: audit
     runs-on: ubuntu-latest
     steps:
 
@@ -57,8 +58,10 @@ jobs:
       with:
         aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        application_name: Gogosbackend-env
-        environment_name: gogos-backend
+        application_name: gogos-backend
+        environment_name: Gogosbackend-env
         version_label: Github deployment
         region: af-south-1
         deployment_package: deploy.zip
+
+        
