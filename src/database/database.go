@@ -24,7 +24,7 @@ var MI MongoInstance
 
 func Connect() {
 	if os.Getenv("APP_ENV") != "production" {
-		err := godotenv.Load()
+		err := godotenv.Load(`../env`)
 		if err != nil {
 			log.Print("Error loading .env file")
 
