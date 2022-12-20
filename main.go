@@ -8,12 +8,21 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/joho/godotenv"
 	"github.com/thephiri/gogos-recipes-backend/src/database"
 	"github.com/thephiri/gogos-recipes-backend/src/routes"
 )
 
 func main() {
 	fmt.Println("Starting GoGoS Recipes Backend")
+	if os.Getenv("APP_ENV") != "production" {
+		err := godotenv.Load()
+		if err != nil {
+			log.Print("Error loading .env file")
+
+		}
+
+	}
 
 	app := fiber.New()
 

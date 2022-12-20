@@ -7,7 +7,6 @@ import (
 	"os"
 	"time"
 
-	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -23,14 +22,6 @@ type MongoInstance struct {
 var MI MongoInstance
 
 func Connect() {
-	if os.Getenv("APP_ENV") != "production" {
-		err := godotenv.Load(`../env`)
-		if err != nil {
-			log.Print("Error loading .env file")
-
-		}
-
-	}
 
 	client, err := mongo.NewClient(options.Client().ApplyURI(os.Getenv("MONGO_URI")))
 	if err != nil {
