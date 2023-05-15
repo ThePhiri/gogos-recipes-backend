@@ -101,7 +101,7 @@ func SignUp(c *fiber.Ctx) error {
 	user.ID = primitive.NewObjectID()
 	user.User_id = user.ID.Hex()
 
-	token, refreshToken, _ := helper.GenerateAllTokens(user.Email, user.First_name, user.Last_name, user.User_id)
+	token, refreshToken, _ := helper.GenerateAllTokens(user.Email, user.First_name, user.Last_name, user.User_name, user.User_id)
 	user.Token = token
 	user.Refresh_token = refreshToken
 
@@ -168,7 +168,7 @@ func Login(c *fiber.Ctx) error {
 		)
 	}
 
-	token, refreshToken, _ := helper.GenerateAllTokens(foundUser.Email, foundUser.First_name, foundUser.Last_name, foundUser.User_id)
+	token, refreshToken, _ := helper.GenerateAllTokens(foundUser.Email, foundUser.First_name, foundUser.Last_name, foundUser.User_name, foundUser.User_id)
 
 	helper.UpdateAllTokens(token, refreshToken, foundUser.User_id)
 
