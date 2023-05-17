@@ -14,7 +14,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-//signed Details
+// signed Details
 type SignedDetails struct {
 	Email      string
 	First_name string
@@ -61,6 +61,9 @@ func GenerateAllTokens(email string, firstName string, lastName string, userName
 
 func ValidateToken(signedToken string) (claims *SignedDetails, msg string) {
 	var key string = os.Getenv("SECRET_KEY")
+
+	testEnvGet := os.Getenv("APP_ENV")
+	fmt.Print("this is the environment", testEnvGet)
 
 	token, err := jwt.ParseWithClaims(
 		signedToken,
