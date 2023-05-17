@@ -62,9 +62,6 @@ func GenerateAllTokens(email string, firstName string, lastName string, userName
 func ValidateToken(signedToken string) (claims *SignedDetails, msg string) {
 	var key string = os.Getenv("SECRET_KEY")
 
-	testEnvGet := os.Getenv("APP_ENV")
-	fmt.Print("this is the environment", testEnvGet)
-
 	token, err := jwt.ParseWithClaims(
 		signedToken,
 		&SignedDetails{},
@@ -76,6 +73,7 @@ func ValidateToken(signedToken string) (claims *SignedDetails, msg string) {
 		msg = err.Error()
 		return
 	}
+	fmt.Print("tokens pared..onto claims")
 
 	claims, ok := token.Claims.(*SignedDetails)
 	if !ok {
