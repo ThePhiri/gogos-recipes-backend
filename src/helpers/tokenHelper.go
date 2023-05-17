@@ -56,17 +56,18 @@ func GenerateAllTokens(email string, firstName string, lastName string, userName
 		log.Print("GEnerate tokenm error", err)
 		return
 	}
+
+	fmt.Print("token gen is", token)
 	return token, refreshToken, err
 }
 
 func ValidateToken(signedToken string) (claims *SignedDetails, msg string) {
-	var key string = os.Getenv("SECRET_KEY")
 
 	token, err := jwt.ParseWithClaims(
 		signedToken,
 		&SignedDetails{},
 		func(token *jwt.Token) (interface{}, error) {
-			return []byte(key), nil
+			return []byte(SECRET_KEY), nil
 		},
 	)
 	if err != nil {
