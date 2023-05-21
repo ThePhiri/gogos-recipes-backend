@@ -139,7 +139,7 @@ func GetRecipeById(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(
 		fiber.Map{
 			"message": "Recipe found",
-			"status":  "error",
+			"status":  "success",
 			"data":    recipe,
 		},
 	)
@@ -183,7 +183,7 @@ func GetRecipeByCulture(c *fiber.Ctx) error {
 
 //delete recipe function
 
-//get recipes by user id
+// get recipes by user id
 func GetByUserId(c *fiber.Ctx) error {
 	userId := c.Params("userId")
 
@@ -206,7 +206,7 @@ func GetByUserId(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(
 		fiber.Map{
 			"message": "Recipes found",
-			"status":  "error",
+			"status":  "success",
 			"data":    recipes,
 		},
 	)

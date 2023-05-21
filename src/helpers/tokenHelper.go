@@ -62,7 +62,7 @@ func GenerateAllTokens(email string, firstName string, lastName string, userName
 }
 
 func ValidateToken(signedToken string) (claims *SignedDetails, msg string) {
-
+	fmt.Print("validate token")
 	token, err := jwt.ParseWithClaims(
 		signedToken,
 		&SignedDetails{},
