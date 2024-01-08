@@ -188,18 +188,18 @@ func Logout(c *fiber.Ctx) error {
 	var user models.User
 	var foundUser models.User
 
-	if err := c.BodyParser(&user); err != nil {
-		defer cancel()
-		return c.Status(500).JSON(
+	user_id := c.Params("id")
+	if user_id == "" {
+		return c.Status(fiber.StatusInternalServerError).JSON(
 			fiber.Map{
-				"message": "Error parsing body",
+				"message": "User id found",
 				"status":  "error",
-				"error":   err,
+				"error":   "User not found",
 			},
 		)
 	}
 
-	err := userCollection.FindOne(ctx, bson.M{"_id": user.ID}).Decode(&foundUser)
+	err := userCollection.FindOne(ctx, bson.M{"_id": user_id}).Decode(&foundUser)
 	defer cancel()
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(

@@ -9,5 +9,5 @@ func UserRoutes(route fiber.Router) {
 
 	route.Post("/signup", controllers.SignUp)
 	route.Post("/login", controllers.Login)
-	route.Post("/logout", controllers.Logout)
+	route.Post("/logout/:id", controllers.Logout)
 }
