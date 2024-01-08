@@ -181,3 +181,56 @@ func Login(c *fiber.Ctx) error {
 	)
 
 }
+
+func Logout(c *fiber.Ctx) error {
+	var userCollection = database.MI.DB.Collection("users")
+	var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+	var user models.User
+	var foundUser models.User
+
+	if err := c.BodyParser(&user); err != nil {
+		defer cancel()
+		return c.Status(500).JSON(
+			fiber.Map{
+				"message": "Error parsing body",
+				"status":  "error",
+				"error":   err,
+			},
+		)
+	}
+
+	err := userCollection.FindOne(ctx, bson.M{"_id": user.ID}).Decode(&foundUser)
+	defer cancel()
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(
+			fiber.Map{
+				"message": "User not found",
+				"status":  "error",
+				"error":   err,
+			},
+		)
+	}
+
+	foundUser.Token = ""
+	foundUser.Refresh_token = ""
+
+	_, err = userCollection.UpdateOne(ctx, bson.M{"_id": user.ID}, bson.M{"$set": foundUser})
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(
+			fiber.Map{
+				"message": "Error updating user",
+				"status":  "error",
+				"error":   err,
+			},
+		)
+	}
+
+	return c.Status(fiber.StatusOK).JSON(
+		fiber.Map{
+			"message": "Logged out",
+			"status":  "success",
+			"data":    foundUser,
+		},
+	)
+
+}
