@@ -203,6 +203,7 @@ func Logout(c *fiber.Ctx) error {
 
 	user_id := c.Params("id")
 	if user_id == "" {
+		defer cancel()
 		return c.Status(fiber.StatusInternalServerError).JSON(
 			fiber.Map{
 				"message": "User id found",
