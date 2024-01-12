@@ -144,6 +144,19 @@ func Login(c *fiber.Ctx) error {
 		)
 	}
 
+	//check if email is valid
+	validationErr := validate.Var(user.Email, "required,email")
+	if validationErr != nil {
+		defer cancel()
+		return c.Status(400).JSON(
+			fiber.Map{
+				"message": "Email is invalid",
+				"status":  "error",
+				"error":   validationErr,
+			},
+		)
+	}
+
 	err := userCollection.FindOne(ctx, bson.M{"email": user.Email}).Decode(&foundUser)
 	defer cancel()
 	if err != nil {
